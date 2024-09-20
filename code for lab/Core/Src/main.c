@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "software_timer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -56,6 +56,8 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+int status = 0;
+//int count = 50;
 const uint8_t segDigits[10] = {
     0b01000000, // 0: Seg0, Seg1, Seg2, Seg3, Seg4, Seg5
     0b01111001, // 1: Seg1, Seg2
@@ -79,7 +81,29 @@ void displayDigit(uint8_t digit) {
     HAL_GPIO_WritePin(Seg5_GPIO_Port, Seg5_Pin, (segDigits[digit] & 0x20) ? 1 : 0);
     HAL_GPIO_WritePin(Seg6_GPIO_Port, Seg6_Pin, (segDigits[digit] & 0x40) ? 1 : 0);
 }
+void led_7_seg(){
+	switch(status){
 
+		case 0:
+			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, 0);
+			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, 1);
+			displayDigit(1);
+
+			status = 1;
+			break;
+		case 1:
+			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, 1);
+			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, 0);
+			displayDigit(2);
+
+			status = 0;
+			break;
+		default:
+			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, 1);
+			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, 1);
+			break;
+		}
+}
 /* USER CODE END 0 */
 
 /**
@@ -117,9 +141,21 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-
+/*
+ *
+ *
+ * tai sao sai so cua software_timer la 1 tich */
   while (1)
   {
+	  if(isTimerExpired(0) == 1){
+		  setTimer(0, 1000);
+		  HAL_GPIO_TogglePin(Led_red_GPIO_Port, Led_red_Pin);
+	  }
+	  if(isTimerExpired(1) == 1){
+		  //7led
+		  setTimer(1, 500);
+		  led_7_seg();
+	  }
 
     /* USER CODE END WHILE */
 
@@ -247,27 +283,10 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-int count = 500;
-int status = 0;
+
 void HAL_TIM_PeriodElapsedCallback ( TIM_HandleTypeDef * htim )
 {
-	switch(status){
-
-	case 0:
-		displayDigit(count);
-		count--;
-		if( count <= 0){
-			count = 500;
-			status = 1;
-		}
-	case 1:
-		displayDigit(count);
-		count--;
-		if( count <= 0){
-			count = 500;
-			status = 1;
-		}
-	}
+	timerRun();
 }
 /* USER CODE END 4 */
 
