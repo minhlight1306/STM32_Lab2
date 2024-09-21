@@ -86,45 +86,39 @@ void led_7_seg(){
 
 		case 0:
 			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, 0);
-			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, 1);
-			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, 1);
-			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, 1);
+			HAL_GPIO_WritePin(GPIOA, EN1_Pin
+			                          |EN2_Pin|EN3_Pin, 1);
 			displayDigit(1);
 
 			status++;
 			break;
 		case 1:
-			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, 1);
 			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, 0);
-			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, 1);
-			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, 1);
+			HAL_GPIO_WritePin(GPIOA, EN0_Pin
+			                          |EN2_Pin|EN3_Pin, 1);
 			displayDigit(2);
 
 			status++;
 			break;
 		case 2:
-			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, 1);
-			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, 1);
 			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, 0);
-			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, 1);
+			HAL_GPIO_WritePin(GPIOA, EN0_Pin|EN1_Pin
+			                          |EN3_Pin, 1);
 			displayDigit(3);
 
 			status++;
 			break;
 		case 3:
-			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, 1);
-			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, 1);
-			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, 1);
 			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, 0);
+			HAL_GPIO_WritePin(GPIOA, EN0_Pin
+			                          |EN1_Pin|EN2_Pin, 1);
 			displayDigit(0);
 
 			status = 0;
 			break;
 		default:
-			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, 1);
-			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, 1);
-			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, 1);
-			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, 1);
+			HAL_GPIO_WritePin(GPIOA, EN0_Pin|EN1_Pin
+			                          |EN2_Pin|EN3_Pin, 1);
 			status = 0;
 			break;
 		}
@@ -181,8 +175,9 @@ int main(void)
 		  setTimer(1, 500);
 		  led_7_seg();
 	  }
-	  if(isTimerExpired(2) == 2){
-		  HAL_GPIO_WritePin(DOT_GPIO_Port, DOT_Pin, 1);
+	  if(isTimerExpired(2) == 1){
+		  setTimer(2, 1000);
+		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
 	  }
 
     /* USER CODE END WHILE */
