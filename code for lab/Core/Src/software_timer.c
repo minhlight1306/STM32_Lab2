@@ -1,16 +1,16 @@
 
 #include "software_timer.h"
-//# define MAX_COUNTER 10
+# define MAX_COUNTER 10
 
-int timerCounter[10];
-int timerFlag[10];
+int timerCounter[MAX_COUNTER];
+int timerFlag[MAX_COUNTER];
 
 void setTimer(int index, int counter){
 	timerCounter[index] = counter/10;
 	timerFlag[index] = 0;
 }
 void timerRun(){
-	for(int i = 0; i < 10; i++){
+	for(int i = 0; i < MAX_COUNTER; i++){
 		if(timerCounter[i] >= 0){
 			timerCounter[i]--;
 		}
