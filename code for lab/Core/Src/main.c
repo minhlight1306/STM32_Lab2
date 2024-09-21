@@ -125,6 +125,7 @@ void led_7_seg(){
 			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, 1);
 			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, 1);
 			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, 1);
+			status = 0;
 			break;
 		}
 }
@@ -179,6 +180,9 @@ int main(void)
 		  //7led
 		  setTimer(1, 500);
 		  led_7_seg();
+	  }
+	  if(isTimerExpired(2) == 2){
+		  HAL_GPIO_WritePin(DOT_GPIO_Port, DOT_Pin, 1);
 	  }
 
     /* USER CODE END WHILE */
