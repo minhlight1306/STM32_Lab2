@@ -56,7 +56,6 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
 const uint8_t segDigits[10] = {
     0b01000000, // 0: Seg0, Seg1, Seg2, Seg3, Seg4, Seg5
     0b01111001, // 1: Seg1, Seg2
@@ -80,13 +79,11 @@ void displayDigit(uint8_t digit) {
     HAL_GPIO_WritePin(Seg5_GPIO_Port, Seg5_Pin, (segDigits[digit] & 0x20) ? 1 : 0);
     HAL_GPIO_WritePin(Seg6_GPIO_Port, Seg6_Pin, (segDigits[digit] & 0x40) ? 1 : 0);
 }
-
 const int MAX_LED = 4;
 int index_led = 0;
 int led_buffer[4] = {1, 2, 3, 4};
-void update7SEG (int index) {
-	HAL_GPIO_WritePin(GPIOA, EN0_Pin|EN1_Pin
-	                          |EN2_Pin|EN3_Pin, 1);
+void update7SEG(int index) {
+	HAL_GPIO_WritePin(GPIOA, EN0_Pin|EN1_Pin|EN2_Pin|EN3_Pin, 1);
 	switch (index) {
 		case 0:
 			//Display the first 7SEG with led_buffer [0]
@@ -109,12 +106,50 @@ void update7SEG (int index) {
 			displayDigit(led_buffer[3]);
 			break;
 		default:
-
 			break;
 	}
+
 	index_led++;
 	if(index_led >= MAX_LED){
 		index_led = 0;
+	}
+}
+int h = 15, min = 8, sec = 50;
+void updateClockBuffer(){
+	if(h < 10){
+		led_buffer[0] = 0;
+		led_buffer[1] = h;
+	}
+	else{
+		led_buffer[0] = h/10;
+		led_buffer[1] = h%10;
+	}
+	if(min < 10){
+		led_buffer[2] = 0;
+		led_buffer[3] = min;
+	}
+	else{
+		led_buffer[2] = min/10;
+		led_buffer[3] = min%10;
+	}
+}
+void digitalClock(int hour, int minute, int second){
+
+	update7SEG(0);
+	update7SEG(1);
+	update7SEG(2);
+	update7SEG(3);
+	second++;
+	if(second >= 60){
+		min++;
+		second = 0;
+	}
+	if(minute >= 60){
+		hour++;
+		minute = 0;
+	}
+	if(hour >= 24){
+		hour = 0;
 	}
 }
 /* USER CODE END 0 */
@@ -161,17 +196,16 @@ int main(void)
   while (1)
   {
 	  if(isTimerExpired(0) == 1){
-		  //UPDATE LED_RED
 		  setTimer(0, 1000);
 		  HAL_GPIO_TogglePin(Led_red_GPIO_Port, Led_red_Pin);
 	  }
 	  if(isTimerExpired(1) == 1){
-		  //UPDATE LED 7SEG
-		  setTimer(1, 500);
-		  update7SEG(index_led);
+		  //7led
+		  setTimer(1, 1000);
+		  updateClockBuffer();
+		  digitalClock(h, min, sec);
 	  }
 	  if(isTimerExpired(2) == 1){
-		  //UPDATE DOT
 		  setTimer(2, 1000);
 		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
 	  }
