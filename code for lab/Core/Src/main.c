@@ -114,7 +114,7 @@ void update7SEG(int index) {
 		index_led = 0;
 	}
 }
-int h = 15, min = 9, sec = 50;
+int h = 15, min = 59, sec = 50;
 void updateClockBuffer(){
 	if(h < 10){
 		led_buffer[0] = 0;
@@ -193,7 +193,6 @@ int main(void)
   setTimer(0, 1000);
   setTimer(1, 1000);
   setTimer(2, 250);
-  setTimer(3, 250);
   while (1)
   {
 	  if(isTimerExpired(0) == 1){
@@ -211,10 +210,6 @@ int main(void)
 		  setTimer(2, 250);
 		  updateClockBuffer();
 		  update7SEG(index_led);
-
-	  }
-	  if(isTimerExpired(3) == 1){
-		  setTimer(3, 250);
 		  digitalClock();
 	  }
     /* USER CODE END WHILE */
