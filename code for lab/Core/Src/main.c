@@ -258,12 +258,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-/*
- * tai sao sai so cua software_timer la 1 tich
- * vong lap while(1) khong xac dinh thoi gian
- * setTimer nam o bat ki thoi gian nao
- * mat di 1 counter 1 tick ngay dau tien, tu thu hai luon dung
- * */
+
   setTimer(0, 1000);
   setTimer(1, 1000);
   setTimer(2, 250);
