@@ -150,14 +150,14 @@ void digitalClock(){
 const int MAX_LED_MATRIX = 8;
 int index_led_matrix = 0;
 uint8_t matrix_buffer[8] = {
-    0xFF, // Column 0
-    0xFF, // Column 1
-    0x06, // Column 2
-    0x0C, // Column 3
-    0x0C, // Column 4
-    0x06, // Column 5
-    0xFF, // Column 6
-    0xFF  // Column 7
+    0x00, // Column 0
+    0x7E, // Column 1
+    0x04, // Column 2
+    0x08, // Column 3
+    0x08, // Column 4
+    0x04, // Column 5
+    0x7E, // Column 6
+    0x00  // Column 7
 };
 void displayLEDMatrix(uint8_t index){
     HAL_GPIO_WritePin(GPIOB, ROW0_Pin, (matrix_buffer[index] & 0x01) ? 0 : 1);
@@ -179,6 +179,7 @@ void updateLEDMatrix (int index) {
 					break;
 				case 1:
 					HAL_GPIO_WritePin(ENM1_GPIO_Port, ENM1_Pin, 0);
+					displayLEDMatrix(index);
 					break;
 				case 2:
 					HAL_GPIO_WritePin(ENM2_GPIO_Port, ENM2_Pin, 0);
@@ -213,17 +214,11 @@ void updateLEDMatrix (int index) {
 	}
 }
 void updateClockMatrixBuffer(){
-	for (int i = 0; i < 8; i++) {
-	        // Update the matrix_buffer based on the M pattern
-	        for (int k = 0; k < 8; k++) {
-	        	matrix_buffer[k] = (matrix_buffer[k] * 0x02); // Shift left
-	        }
-
-	        // Display the updated matrix
-	        for (uint8_t rowIndex = 0; rowIndex < 8; rowIndex++) {
-	            displayLEDMatrix(rowIndex);
-	        }
-	    }
+	uint8_t temp = matrix_buffer[0];
+    for (int i = 0; i < MAX_LED_MATRIX - 1; i++) {
+        matrix_buffer[i] = matrix_buffer[i + 1];
+    }
+    matrix_buffer[MAX_LED_MATRIX - 1] = temp;
 }
 
 /* USER CODE END 0 */
@@ -264,16 +259,13 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 /*
- * tai sao sai so cua software_timer la 1 tich
- * vong lap while(1) khong xac dinh thoi gian
- * setTimer nam o bat ki thoi gian nao
- * mat di 1 counter 1 tick ngay dau tien, tu thu hai luon dung
+
  * */
   setTimer(0, 1000);
   setTimer(1, 1000);
   setTimer(2, 250);
   setTimer(3, 10);
-  setTimer(4, 1000);
+  setTimer(4, 500);
   while (1)
   {
 	  if(isTimerExpired(0) == 1){
@@ -297,10 +289,10 @@ int main(void)
 	  		  setTimer(3, 10);
 	  		  updateLEDMatrix(index_led_matrix);
 	  	  }
-	  /*	  if(isTimerExpired(4) == 1){
+	  if(isTimerExpired(4) == 1){
 	  		  setTimer(4, 500);
 	  		  updateClockMatrixBuffer();
-	  	  }*/
+	  	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
