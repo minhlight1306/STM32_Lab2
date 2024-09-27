@@ -133,18 +133,18 @@ void updateClockBuffer(){
 		led_buffer[3] = min%10;
 	}
 }
-void digitalClock(int hour, int minute, int second){
-	second++;
-	if(second >= 60){
-		minute++;
-		second = 0;
+void digitalClock(){
+	sec++;
+	if(sec >= 60){
+		min++;
+		sec = 0;
 	}
-	if(minute >= 60){
-		hour++;
-		minute = 0;
+	if(min >= 60){
+		h++;
+		min = 0;
 	}
-	if(hour >= 24){
-		hour = 0;
+	if(h >= 24){
+		h = 0;
 	}
 }
 /* USER CODE END 0 */
@@ -185,11 +185,15 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 /*
- * tai sao sai so cua software_timer la 1 tich */
+ * tai sao sai so cua software_timer la 1 tich
+ * vong lap while(1) khong xac dinh thoi gian
+ * setTimer nam o bat ki thoi gian nao
+ * mat di 1 counter 1 tick ngay dau tien, tu thu hai luon dung
+ * */
   setTimer(0, 1000);
   setTimer(1, 1000);
-  setTimer(2, 500);
-  setTimer(3, 1000);
+  setTimer(2, 250);
+  setTimer(3, 250);
   while (1)
   {
 	  if(isTimerExpired(0) == 1){
@@ -204,14 +208,14 @@ int main(void)
 	  }
 	  if(isTimerExpired(2) == 1){
 		  //7led
-		  setTimer(2, 500);
+		  setTimer(2, 250);
 		  updateClockBuffer();
 		  update7SEG(index_led);
 
 	  }
 	  if(isTimerExpired(3) == 1){
-		  setTimer(3, 1000);
-		  digitalClock(h, min, sec);
+		  setTimer(3, 250);
+		  digitalClock();
 	  }
     /* USER CODE END WHILE */
 
