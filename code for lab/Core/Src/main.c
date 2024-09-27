@@ -159,15 +159,15 @@ uint8_t matrix_buffer[8] = {
     0x7E, // Column 6
     0x00  // Column 7
 };
-void displayLEDMatrix(uint8_t index){
-    HAL_GPIO_WritePin(GPIOB, ROW0_Pin, (matrix_buffer[index] & 0x01) ? 0 : 1);
-    HAL_GPIO_WritePin(GPIOB, ROW1_Pin, (matrix_buffer[index] & 0x02) ? 0 : 1);
-    HAL_GPIO_WritePin(GPIOB, ROW2_Pin, (matrix_buffer[index] & 0x04) ? 0 : 1);
-    HAL_GPIO_WritePin(GPIOB, ROW3_Pin, (matrix_buffer[index] & 0x08) ? 0 : 1);
-    HAL_GPIO_WritePin(GPIOB, ROW4_Pin, (matrix_buffer[index] & 0x10) ? 0 : 1);
-    HAL_GPIO_WritePin(GPIOB, ROW5_Pin, (matrix_buffer[index] & 0x20) ? 0 : 1);
-    HAL_GPIO_WritePin(GPIOB, ROW6_Pin, (matrix_buffer[index] & 0x40) ? 0 : 1);
-    HAL_GPIO_WritePin(GPIOB, ROW7_Pin, (matrix_buffer[index] & 0x80) ? 0 : 1);
+void displayLEDMatrix(uint8_t digit){
+    HAL_GPIO_WritePin(GPIOB, ROW0_Pin, (matrix_buffer[digit] & 0x01) ? 0 : 1);
+    HAL_GPIO_WritePin(GPIOB, ROW1_Pin, (matrix_buffer[digit] & 0x02) ? 0 : 1);
+    HAL_GPIO_WritePin(GPIOB, ROW2_Pin, (matrix_buffer[digit] & 0x04) ? 0 : 1);
+    HAL_GPIO_WritePin(GPIOB, ROW3_Pin, (matrix_buffer[digit] & 0x08) ? 0 : 1);
+    HAL_GPIO_WritePin(GPIOB, ROW4_Pin, (matrix_buffer[digit] & 0x10) ? 0 : 1);
+    HAL_GPIO_WritePin(GPIOB, ROW5_Pin, (matrix_buffer[digit] & 0x20) ? 0 : 1);
+    HAL_GPIO_WritePin(GPIOB, ROW6_Pin, (matrix_buffer[digit] & 0x40) ? 0 : 1);
+    HAL_GPIO_WritePin(GPIOB, ROW7_Pin, (matrix_buffer[digit] & 0x80) ? 0 : 1);
 }
 void updateLEDMatrix (int index) {
 	HAL_GPIO_WritePin(GPIOA, ENM0_Pin|ENM1_Pin|ENM2_Pin|ENM3_Pin
@@ -286,12 +286,12 @@ int main(void)
 		  digitalClock();
 	  }
 	  if(isTimerExpired(3) == 1){
-	  		  setTimer(3, 10);
-	  		  updateLEDMatrix(index_led_matrix);
+		  setTimer(3, 10);
+		  updateLEDMatrix(index_led_matrix);
 	  	  }
 	  if(isTimerExpired(4) == 1){
-	  		  setTimer(4, 500);
-	  		  updateClockMatrixBuffer();
+		  setTimer(4, 500);
+		  //updateClockMatrixBuffer();
 	  	  }
     /* USER CODE END WHILE */
 
