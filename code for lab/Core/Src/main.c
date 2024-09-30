@@ -193,6 +193,7 @@ int main(void)
   setTimer(0, 100);
   setTimer(1, 150);
   setTimer(2, 200);
+  setTimer(3, 1000);
   while (1)
   {
 	  if(isTimerExpired(0) == 1){
@@ -210,6 +211,10 @@ int main(void)
 		  setTimer(2, 250);
 		  updateClockBuffer();
 		  update7SEG(index_led);
+
+	  }
+	  if(isTimerExpired(3) == 1){
+		  setTimer(3, 1000);
 		  digitalClock();
 	  }
     /* USER CODE END WHILE */
