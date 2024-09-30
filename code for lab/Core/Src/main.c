@@ -264,8 +264,9 @@ int main(void)
   setTimer(0, 100);
   setTimer(1, 200);
   setTimer(2, 150);
-  setTimer(3, 5);
-  setTimer(4, 300);
+  setTimer(3, 1000);
+  setTimer(4, 5);
+  setTimer(5, 300);
   while (1)
   {
 	  if(isTimerExpired(0) == 1){
@@ -283,13 +284,17 @@ int main(void)
 		  setTimer(2, 250);
 		  updateClockBuffer();
 		  update7SEG(index_led);
-		  digitalClock();
 	  }
 	  if(isTimerExpired(3) == 1){
+		  //7led
+		  setTimer(3, 1000);
+		  digitalClock();
+	  }
+	  if(isTimerExpired(4) == 1){
 		  setTimer(3, 10);
 		  updateLEDMatrix(index_led_matrix);
 	  	  }
-	  if(isTimerExpired(4) == 1){
+	  if(isTimerExpired(5) == 1){
 		  setTimer(4, 500);
 		  //updateClockMatrixBuffer();
 	  	  }
