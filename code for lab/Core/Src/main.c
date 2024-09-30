@@ -190,9 +190,9 @@ int main(void)
  * setTimer nam o bat ki thoi gian nao
  * mat di 1 counter 1 tick ngay dau tien, tu thu hai luon dung
  * */
-  setTimer(0, 1000);
-  setTimer(1, 1000);
-  setTimer(2, 250);
+  setTimer(0, 100);
+  setTimer(1, 150);
+  setTimer(2, 200);
   while (1)
   {
 	  if(isTimerExpired(0) == 1){
