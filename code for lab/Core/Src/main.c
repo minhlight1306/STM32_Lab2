@@ -145,6 +145,8 @@ int main(void)
  *
  *
  * tai sao sai so cua software_timer la 1 tich */
+  setTimer(0, 100);
+  setTimer(1, 200);
   while (1)
   {
 	  if(isTimerExpired(0) == 1){
