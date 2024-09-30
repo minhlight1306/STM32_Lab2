@@ -259,11 +259,11 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-  setTimer(0, 1000);
-  setTimer(1, 1000);
-  setTimer(2, 250);
-  setTimer(3, 10);
-  setTimer(4, 500);
+  setTimer(0, 100);
+  setTimer(1, 200);
+  setTimer(2, 150);
+  setTimer(3, 5);
+  setTimer(4, 300);
   while (1)
   {
 	  if(isTimerExpired(0) == 1){
